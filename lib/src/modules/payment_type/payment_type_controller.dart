@@ -4,7 +4,6 @@ import 'package:mobx/mobx.dart';
 
 import '../../models/payment_type_model.dart';
 import '../../repositories/payment_type/payment_type_repository.dart';
-import 'payment_type_module.dart';
 
 part 'payment_type_controller.g.dart';
 
@@ -14,6 +13,7 @@ enum PaymentTypeStateStatus {
   loaded,
   error,
   addOrUpdatePayment,
+  saved,
 }
 
 class PaymentTypeController = PaymentTypeControllerBase
@@ -66,5 +66,18 @@ abstract class PaymentTypeControllerBase with Store {
     await Future.delayed(Duration.zero);
     _paymentTypeSelected = payment;
     _status = PaymentTypeStateStatus.addOrUpdatePayment;
+  }
+
+  @action
+  void savePayment({
+    required String name,
+    required String acronym,
+    required bool enabled,
+    int? id,
+  }) async {
+    _status = PaymentTypeStateStatus.loading;
+    final paymentTypeModel = PaymentTypeModel(id, name, acronym, enabled);
+    await _paymentTypeRepository.save(paymentTypeModel);
+    _status = PaymentTypeStateStatus.saved;
   }
 }
