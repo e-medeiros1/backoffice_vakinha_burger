@@ -69,7 +69,7 @@ abstract class PaymentTypeControllerBase with Store {
   }
 
   @action
-  void savePayment({
+  Future savePayment({
     required String name,
     required String acronym,
     required bool enabled,
