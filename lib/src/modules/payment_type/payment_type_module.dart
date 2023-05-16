@@ -6,12 +6,11 @@ import 'payment_type_page.dart';
 class PaymentTypeModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind.lazySingleton(
-          (i) => PaymentTypeController(i()),
-        )
+        Bind.lazySingleton((i) => PaymentTypeController(i())),
       ];
 
   @override
-  List<ModularRoute> get routes =>
-      [ChildRoute('/', child: (context, args) => const PaymentTypePage())];
+  List<ModularRoute> get routes => [
+        ChildRoute('/', child: (context, args) => const PaymentTypePage()),
+      ];
 }

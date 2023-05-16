@@ -6,7 +6,7 @@ import 'package:mobx/mobx.dart';
 import '../../core/ui/helpers/loader.dart';
 import '../../core/ui/helpers/messages.dart';
 import 'payment_type_controller.dart';
-import 'widgets/payment_type_form/payment_type_form_modal.dart';
+import 'widgets/paymentTypeForm/payment_type_form_modal.dart';
 import 'widgets/payment_type_header.dart';
 import 'widgets/payment_type_item.dart';
 
@@ -20,11 +20,11 @@ class PaymentTypePage extends StatefulWidget {
 class _PaymentTypePageState extends State<PaymentTypePage>
     with Loader, Messages {
   final controller = Modular.get<PaymentTypeController>();
-
   final disposers = <ReactionDisposer>[];
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final filterDisposer = reaction((_) => controller.filterEnabled, (_) {
         controller.loadPayments();
@@ -43,7 +43,7 @@ class _PaymentTypePageState extends State<PaymentTypePage>
           case PaymentTypeStateStatus.error:
             hideLoader();
             showError(
-              controller.errorMessage ?? 'Erro ao buscar formas de pagamento',
+              controller.errorMessage ?? 'Erro ao buscar formas de pagamentos',
             );
             break;
           case PaymentTypeStateStatus.addOrUpdatePayment:
@@ -57,13 +57,9 @@ class _PaymentTypePageState extends State<PaymentTypePage>
             break;
         }
       });
-      disposers.addAll([
-        statusDisposer,
-        filterDisposer,
-      ]);
+      disposers.addAll([statusDisposer, filterDisposer]);
       controller.loadPayments();
     });
-    super.initState();
   }
 
   @override
@@ -99,17 +95,19 @@ class _PaymentTypePageState extends State<PaymentTypePage>
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.grey[50],
       padding: const EdgeInsets.only(left: 40, top: 40, right: 40),
-      color: Colors.grey.shade50,
       child: Column(
         children: [
-          PaymentTypeHeader(controller: controller),
+          PaymentTypeHeader(
+            controller: controller,
+          ),
           const SizedBox(
             height: 50,
           ),
           Expanded(
             child: Observer(
-              builder: (_) {
+              builder: (context) {
                 return GridView.builder(
                   itemCount: controller.paymentTypes.length,
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -121,14 +119,14 @@ class _PaymentTypePageState extends State<PaymentTypePage>
                   itemBuilder: (context, index) {
                     final paymentTypeModel = controller.paymentTypes[index];
                     return PaymentTypeItem(
-                      controller: controller,
                       payment: paymentTypeModel,
+                      controller: controller,
                     );
                   },
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

@@ -63,6 +63,24 @@ mixin _$PaymentTypeController on PaymentTypeControllerBase, Store {
     });
   }
 
+  late final _$_filterEnabledAtom =
+      Atom(name: 'PaymentTypeControllerBase._filterEnabled', context: context);
+
+  bool? get filterEnabled {
+    _$_filterEnabledAtom.reportRead();
+    return super._filterEnabled;
+  }
+
+  @override
+  bool? get _filterEnabled => filterEnabled;
+
+  @override
+  set _filterEnabled(bool? value) {
+    _$_filterEnabledAtom.reportWrite(value, super._filterEnabled, () {
+      super._filterEnabled = value;
+    });
+  }
+
   late final _$_paymentTypeSelectedAtom = Atom(
       name: 'PaymentTypeControllerBase._paymentTypeSelected', context: context);
 
@@ -79,24 +97,6 @@ mixin _$PaymentTypeController on PaymentTypeControllerBase, Store {
     _$_paymentTypeSelectedAtom.reportWrite(value, super._paymentTypeSelected,
         () {
       super._paymentTypeSelected = value;
-    });
-  }
-
-  late final _$_filterEnabledAtom =
-      Atom(name: 'PaymentTypeControllerBase._filterEnabled', context: context);
-
-  bool? get filterEnabled {
-    _$_filterEnabledAtom.reportRead();
-    return super._filterEnabled;
-  }
-
-  @override
-  bool? get _filterEnabled => filterEnabled;
-
-  @override
-  set _filterEnabled(bool? value) {
-    _$_filterEnabledAtom.reportWrite(value, super._filterEnabled, () {
-      super._filterEnabled = value;
     });
   }
 
@@ -120,13 +120,13 @@ mixin _$PaymentTypeController on PaymentTypeControllerBase, Store {
       AsyncAction('PaymentTypeControllerBase.savePayment', context: context);
 
   @override
-  Future savePayment(
-      {required String name,
+  Future<void> savePayment(
+      {int? id,
+      required String name,
       required String acronym,
-      required bool enabled,
-      int? id}) {
+      required bool enabled}) {
     return _$savePaymentAsyncAction.run(() => super
-        .savePayment(name: name, acronym: acronym, enabled: enabled, id: id));
+        .savePayment(id: id, name: name, acronym: acronym, enabled: enabled));
   }
 
   late final _$PaymentTypeControllerBaseActionController =

@@ -2,21 +2,24 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import './payment_type_repository.dart';
 import '../../core/exceptions/repository_exception.dart';
 import '../../core/rest_client/custom_dio.dart';
 import '../../models/payment_type_model.dart';
+import './payment_type_repository.dart';
 
 class PaymentTypeRepositoryImpl implements PaymentTypeRepository {
   final CustomDio _dio;
 
   PaymentTypeRepositoryImpl(this._dio);
+
   @override
-  Future<List<PaymentTypeModel>> findAll(bool? enable) async {
+  Future<List<PaymentTypeModel>> findAll(bool? enabled) async {
     try {
       final paymentResult = await _dio.auth().get(
         '/payment-types',
-        queryParameters: {if (enable != null) 'enable': enable},
+        queryParameters: {
+          if (enabled != null) 'enabled': enabled,
+        },
       );
       return paymentResult.data
           .map<PaymentTypeModel>((p) => PaymentTypeModel.fromMap(p))
@@ -49,19 +52,20 @@ class PaymentTypeRepositoryImpl implements PaymentTypeRepository {
 
       if (model.id != null) {
         await client.put(
-              '/payment-types/${model.id}',
-              data: model.toMap(),
-            );
+          '/payment-types/${model.id}',
+          data: model.toMap(),
+        );
       } else {
         await client.post(
-              '/payment-types/',
-              data: model.toMap(),
-            );
+          '/payment-types/',
+          data: model.toMap(),
+        );
       }
-      
     } on DioError catch (e, s) {
       log('Erro ao salvar forma de pagamento', error: e, stackTrace: s);
-      throw RepositoryException(message: 'Erro ao salvar forma de pagamento');
+      throw RepositoryException(
+        message: 'Erro ao salvar forma de pagamento',
+      );
     }
   }
 }

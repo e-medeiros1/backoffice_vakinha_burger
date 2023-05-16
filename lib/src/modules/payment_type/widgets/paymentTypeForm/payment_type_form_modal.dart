@@ -7,9 +7,14 @@ import '../../../../models/payment_type_model.dart';
 import '../../payment_type_controller.dart';
 
 class PaymentTypeFormModal extends StatefulWidget {
-  const PaymentTypeFormModal({super.key, this.model, required this.controller});
-  final PaymentTypeModel? model;
   final PaymentTypeController controller;
+  final PaymentTypeModel? model;
+
+  const PaymentTypeFormModal({
+    super.key,
+    required this.model,
+    required this.controller,
+  });
 
   @override
   State<PaymentTypeFormModal> createState() => _PaymentTypeFormModalState();
@@ -17,10 +22,11 @@ class PaymentTypeFormModal extends StatefulWidget {
 
 class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
   final formKey = GlobalKey<FormState>();
-  void _closeModal() => Navigator.of(context).pop();
   final nameEC = TextEditingController();
   final acronymEC = TextEditingController();
   var enabled = false;
+
+  void _closeModal() => Navigator.of(context).pop();
 
   @override
   void initState() {
@@ -43,6 +49,7 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = context.screenWidth;
+
     return SingleChildScrollView(
       child: Container(
         width: screenWidth * (screenWidth > 1200 ? .5 : .7),
@@ -67,7 +74,7 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
                       onTap: _closeModal,
                       child: const Icon(Icons.close),
                     ),
-                  ),
+                  )
                 ],
               ),
               const SizedBox(
@@ -85,7 +92,7 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
               ),
               TextFormField(
                 controller: acronymEC,
-                validator: Validatorless.required('Sigla obrigatório'),
+                validator: Validatorless.required('Sigla obrigatória'),
                 decoration: const InputDecoration(
                   label: Text('Sigla'),
                 ),
@@ -93,24 +100,21 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
               const SizedBox(
                 height: 20,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  children: [
-                    Text(
-                      !enabled ? 'Ativar' : 'Ativo',
-                      style: context.textStyles.textRegular,
-                    ),
-                    Switch(
-                      value: enabled,
-                      onChanged: (value) {
-                        setState(() {
-                          enabled = value;
-                        });
-                      },
-                    )
-                  ],
-                ),
+              Row(
+                children: [
+                  Text(
+                    'Ativo:',
+                    style: context.textStyles.textRegular,
+                  ),
+                  Switch(
+                    value: enabled,
+                    onChanged: (value) {
+                      setState(() {
+                        enabled = value;
+                      });
+                    },
+                  ),
+                ],
               ),
               const Divider(),
               Row(
@@ -120,10 +124,10 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
                     height: 60,
                     padding: const EdgeInsets.all(8),
                     child: OutlinedButton(
+                      onPressed: _closeModal,
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.red),
                       ),
-                      onPressed: _closeModal,
                       child: Text(
                         'Cancelar',
                         style: context.textStyles.textExtraBold
@@ -137,6 +141,7 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         final valid = formKey.currentState?.validate() ?? false;
+
                         if (valid) {
                           final name = nameEC.text;
                           final acronym = acronymEC.text;
@@ -151,7 +156,7 @@ class _PaymentTypeFormModalState extends State<PaymentTypeFormModal> {
                       icon: const Icon(Icons.save),
                       label: const Text('Salvar'),
                     ),
-                  )
+                  ),
                 ],
               )
             ],

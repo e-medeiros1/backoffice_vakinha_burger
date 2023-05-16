@@ -6,14 +6,14 @@ import '../../../models/payment_type_model.dart';
 import '../payment_type_controller.dart';
 
 class PaymentTypeItem extends StatelessWidget {
+  final PaymentTypeController controller;
+  final PaymentTypeModel payment;
+
   const PaymentTypeItem({
     super.key,
     required this.payment,
     required this.controller,
   });
-
-  final PaymentTypeModel payment;
-  final PaymentTypeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +25,14 @@ class PaymentTypeItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20.0),
         child: Row(
           children: [
             Image.asset(
-              'assets/images/payment_${payment.acronym}_icon.png',
+              'assets/images/icons/payment_${payment.acronym}_icon.png',
               errorBuilder: (context, error, stackTrace) {
                 return Image.asset(
-                  'assets/images/payment_notfound_icon.png',
+                  'assets/images/icons/payment_notfound_icon.png',
                   color: colorAll,
                 );
               },
@@ -49,7 +49,7 @@ class PaymentTypeItem extends StatelessWidget {
                 children: [
                   FittedBox(
                     child: Text(
-                      'Forma de pagamento',
+                      'Forma de Pagamento',
                       style: context.textStyles.textRegular
                           .copyWith(color: colorAll),
                     ),
@@ -60,7 +60,7 @@ class PaymentTypeItem extends StatelessWidget {
                   FittedBox(
                     child: Text(
                       payment.name,
-                      style: context.textStyles.textButtonTitle
+                      style: context.textStyles.buttonTextTitle
                           .copyWith(color: colorAll),
                     ),
                   ),
@@ -77,14 +77,14 @@ class PaymentTypeItem extends StatelessWidget {
                   child: Text(
                     'Editar',
                     style: context.textStyles.textMedium.copyWith(
-                      color: !payment.enabled
-                          ? Colors.grey
-                          : context.colors.primary,
+                      color: payment.enabled
+                          ? context.colors.primary
+                          : Colors.grey,
                     ),
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
