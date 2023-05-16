@@ -9,7 +9,7 @@ class ThemeConfig {
 
   static final _defaultInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(7),
-    borderSide: BorderSide(color: Colors.grey.shade400),
+    borderSide: BorderSide(color: Colors.grey[400]!),
   );
 
   static final theme = ThemeData(
@@ -17,12 +17,14 @@ class ThemeConfig {
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.black,
       elevation: 0,
-      iconTheme: IconThemeData(color: Colors.black),
+      iconTheme: IconThemeData(
+        color: Colors.black,
+      ),
     ),
     colorScheme: ColorScheme.fromSeed(
       seedColor: ColorsApp.instance.primary,
       primary: ColorsApp.instance.primary,
-      secondary: ColorsApp.instance.secondary,
+      secondary: ColorsApp.instance.secundary,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: AppStyles.instance.primaryButton,
@@ -37,7 +39,6 @@ class ThemeConfig {
       focusedBorder: _defaultInputBorder,
       labelStyle: TextStyles.instance.textRegular.copyWith(color: Colors.black),
       errorStyle: TextStyles.instance.textRegular.copyWith(color: Colors.redAccent),
-
     ),
   );
 }
