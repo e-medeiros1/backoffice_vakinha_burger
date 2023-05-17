@@ -1,11 +1,11 @@
-import './login_service.dart';
 import '../../core/global/constants.dart';
-import '../../core/storage/session_storage.dart';
+import '../../core/storage/storage.dart';
 import '../../repositories/auth/auth_repository.dart';
+import './login_service.dart';
 
 class LoginServiceImpl implements LoginService {
   final AuthRepository _authRepository;
-  final SessionStorage _storage;
+  final Storage _storage;
 
   LoginServiceImpl(this._authRepository, this._storage);
 
@@ -16,7 +16,7 @@ class LoginServiceImpl implements LoginService {
       password,
     );
     _storage.setData(
-      SessionStorageKeys.accessToken.key,
+      SessionStorageKeys.accesToken.key,
       authModel.accessToken,
     );
   }

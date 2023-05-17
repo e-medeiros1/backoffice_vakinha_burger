@@ -4,14 +4,13 @@ import 'package:mobx/mobx.dart';
 
 import '../../core/exceptions/unauthorized_exception.dart';
 import '../../services/auth/login_service.dart';
-
 part 'login_controller.g.dart';
 
 enum LoginStateStatus {
   initial,
   loading,
   success,
-  error,
+  error;
 }
 
 class LoginController = LoginControllerBase with _$LoginController;

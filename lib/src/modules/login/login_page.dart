@@ -21,28 +21,31 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   final emailEC = TextEditingController();
   final passwordEC = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  late final ReactionDisposer statusReactionDisposer;
   final controller = Modular.get<LoginController>();
+  late final ReactionDisposer statusReactionDisposer;
 
   @override
   void initState() {
-    statusReactionDisposer = reaction((_) => controller.loginStatus, (status) {
-      switch (status) {
-        case LoginStateStatus.initial:
-          break;
-        case LoginStateStatus.loading:
-          showLoader();
-          break;
-        case LoginStateStatus.success:
-          hideLoader();
-          Modular.to.navigate('/');
-          break;
-        case LoginStateStatus.error:
-          hideLoader();
-          showError(controller.errorMessage ?? 'Erro ao logar');
-          break;
-      }
-    });
+    statusReactionDisposer = reaction(
+      (_) => controller.loginStatus,
+      (status) {
+        switch (status) {
+          case LoginStateStatus.initial:
+            break;
+          case LoginStateStatus.loading:
+            showLoader();
+            break;
+          case LoginStateStatus.success:
+            hideLoader();
+            Modular.to.navigate('/');
+            break;
+          case LoginStateStatus.error:
+            hideLoader();
+            showError(controller.errorMessage ?? 'Erro');
+            break;
+        }
+      },
+    );
     super.initState();
   }
 
@@ -55,8 +58,8 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   }
 
   void _formSubmit() {
-    final isValid = formKey.currentState?.validate() ?? false;
-    if (isValid) {
+    final formValid = formKey.currentState?.validate() ?? false;
+    if (formValid) {
       controller.login(emailEC.text, passwordEC.text);
     }
   }
@@ -65,6 +68,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
   Widget build(BuildContext context) {
     final screenShortestSide = context.screenShortestSide;
     final screenWidth = context.screenWidth;
+
     return Scaffold(
       backgroundColor: context.colors.black,
       body: Form(
@@ -78,28 +82,32 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                 height: screenShortestSide * .5,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
+                    image: AssetImage(
+                      'assets/images/lanche.png',
+                    ),
                     fit: BoxFit.cover,
-                    image: AssetImage('assets/images/lanche.png'),
                   ),
                 ),
               ),
             ),
             Container(
+              width: screenShortestSide * .5,
               padding: EdgeInsets.only(top: context.percentHeight(.10)),
-              height: screenShortestSide * .5,
               child: Image.asset('assets/images/logo.png'),
             ),
             Align(
               alignment: Alignment.center,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                constraints: BoxConstraints(
-                  maxWidth: context.percentWidth(screenWidth < 1300 ? .7 : .3),
-                ),
-                child: SingleChildScrollView(
+              child: SingleChildScrollView(
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: context.percentWidth(
+                      screenWidth < 1300 ? .7 : .3,
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(30),
                     child: Column(
@@ -112,9 +120,12 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          'Entrar',
-                          style: context.textStyles.textButtonTitle,
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            'Login',
+                            style: context.textStyles.buttonTextTitle,
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -122,8 +133,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                         TextFormField(
                           controller: emailEC,
                           onFieldSubmitted: (_) => _formSubmit(),
-                          decoration:
-                              const InputDecoration(labelText: 'E-mail'),
+                          decoration: const InputDecoration(labelText: 'Email'),
                           validator: Validatorless.multiple([
                             Validatorless.required('E-mail obrigatório'),
                             Validatorless.email('E-mail inválido'),
@@ -137,10 +147,8 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                           onFieldSubmitted: (_) => _formSubmit(),
                           obscureText: true,
                           decoration: const InputDecoration(labelText: 'Senha'),
-                          validator: Validatorless.multiple([
-                            Validatorless.required('Senha obrigatória'),
-                            Validatorless.min(6, 'Mínimo de 6 caracteres'),
-                          ]),
+                          validator:
+                              Validatorless.required('Senha obrigatória'),
                         ),
                         const SizedBox(
                           height: 30,
@@ -152,7 +160,7 @@ class _LoginPageState extends State<LoginPage> with Loader, Messages {
                             onPressed: _formSubmit,
                             child: const Text('Entrar'),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
