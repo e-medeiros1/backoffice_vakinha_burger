@@ -1,64 +1,62 @@
 import 'package:flutter/material.dart';
 
 import '../../core/ui/helpers/size_extensions.dart';
-import 'menu/custom_menu_bar.dart';
+import 'menu/menu_bar.dart' as menu;
 
 class BaseLayout extends StatelessWidget {
   final Widget body;
-  const BaseLayout({super.key, required this.body});
+
+  const BaseLayout({required this.body, super.key});
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = context.screenWidth;
-    final screenShortestSide = context.screenShortestSide;
+    final shortestSide = context.screenShortestSide;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
       body: SizedBox(
         height: context.screenHeight,
         child: Stack(
           children: [
             Container(
-              alignment: Alignment.centerLeft,
               color: Colors.black,
               constraints: BoxConstraints(
                 minWidth: screenWidth,
-                minHeight: screenShortestSide * .15,
-                maxHeight: screenShortestSide * .15,
+                minHeight: shortestSide * .15,
+                maxHeight: shortestSide * .15,
               ),
+              alignment: Alignment.centerLeft,
               child: Container(
-                width: screenShortestSide * .13,
+                width: shortestSide * .13,
                 margin: const EdgeInsets.only(left: 60),
-                child: Image.asset('assets/images/logo.png'),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                ),
               ),
             ),
             Positioned.fill(
-              top: screenShortestSide * .13,
+              top: shortestSide * .13,
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.horizontal(
                     left: Radius.circular(20),
-                    right: Radius.circular(
-                      20,
-                    ),
+                    right: Radius.circular(20),
                   ),
                 ),
                 child: Row(
                   children: [
-                    const CustomMenuBar(),
+                    const menu.MenuBar(),
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.only(left: 20),
-                        color: Colors.grey.shade50,
+                        color: Colors.grey[50]!,
                         child: body,
                       ),
                     ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 class RepositoryException implements Exception {
-  final String? message;
-
-  RepositoryException({this.message});
+  final String message;
+  RepositoryException({
+    required this.message,
+  });
 }
