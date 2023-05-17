@@ -2,12 +2,13 @@ import 'package:dio/browser.dart';
 import 'package:dio/dio.dart';
 
 import '../env/env.dart';
-import '../storage/session_storage.dart';
+import '../storage/storage.dart';
 import 'interceptors/auth_interceptor.dart';
 
 class CustomDio extends DioForBrowser {
   late AuthInterceptor _authInterceptor;
-  CustomDio(SessionStorage storage)
+
+  CustomDio(Storage storage)
       : super(
           BaseOptions(
             baseUrl: Env.instance.get('backend_base_url'),
@@ -27,7 +28,9 @@ class CustomDio extends DioForBrowser {
   }
 
   CustomDio auth() {
-    interceptors.add(_authInterceptor);
+    if (!interceptors.contains(_authInterceptor)) {
+      interceptors.add(_authInterceptor);
+    }
     return this;
   }
 
